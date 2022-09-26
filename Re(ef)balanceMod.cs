@@ -107,7 +107,7 @@ namespace ReikaKalseki.Reefbalance
         
         adjustItemSizes();
         if (config.getBoolean(RBConfig.ConfigEntries.CHEAP_GLASS)) {
-        	RecipeUtil.modifyIngredients(TechType.Glass, i => {if (i.techType == TechType.Quartz)i.amount = 1;return false;});
+        	RecipeUtil.modifyIngredients(TechType.Glass, i => {if (i.techType == TechType.Quartz) i.amount = 1; return false;});
         }
         if (config.getBoolean(RBConfig.ConfigEntries.CHEAP_HUDCHIP)) {
         	RecipeUtil.modifyIngredients(TechType.MapRoomHUDChip, i => i.techType == TechType.Magnetite);
@@ -225,32 +225,6 @@ namespace ReikaKalseki.Reefbalance
     		return RBConfig.ConfigEntries.FOOD_DELAY_VEG;
     	return RBConfig.ConfigEntries.FOOD_DELAY;
     }
-    /*
-    public static void onCreatureActivate(Creature c) {
-    	//GameObject container = c.__instance.gameObject;
-    	GameObject container = c.gameObject;
-    	TechType id = CraftData.GetTechType(container);/*
-    	if (id == TechType.Shocker) {
-	    	Pickupable p = container.GetComponent<Pickupable>();
-	    	if (p == null) {
-	    		p = container.AddComponent<Pickupable>();
-	    	}
-	    	p.isPickupable = true;
-    	}*/	/*
-    	if (id == TechType.Stalker || id == TechType.Crash || id == TechType.Warper || id == TechType.Crabsnake || id == TechType.Gasopod || id == TechType.Biter || id == TechType.Shocker || id == TechType.BoneShark || id == TechType.Reefback || id == TechType.ReefbackBaby || id == TechType.Sandshark || id == TechType.RabbitRay) {
-	    	Pickupable p = container.GetComponent<Pickupable>();
-	    	if (p == null) {
-	    		return;
-	    	}/*
-	    	ali = container.GetComponent<Pickupable>();
-	    	if (acu != null) {
-	    		return;
-	    	}
-	    	UnityEngine.Object.Destroy(p);
-	    	SBUtil.log("De-pickupabled "+c+": "+p+" / "+container+" = "+Enum.GetName(typeof(TechType), id));
-	    	 
-    	}*//*
-    }*/
     
     public static void initializeSeamothStorage(SeamothStorageContainer sc) {
   		sc.width = 6;
