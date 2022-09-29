@@ -42,6 +42,14 @@ namespace ReikaKalseki.Reefbalance
     
     private static readonly HashSet<TechType> meatFoods = new HashSet<TechType>();
     private static readonly HashSet<TechType> vegFoods = new HashSet<TechType>();
+	    
+	private static readonly HashSet<string> containmentDragonRepellents = new HashSet<string>() {
+	   	"c5512e00-9959-4f57-98ae-9a9962976eaa",
+	   	"542aaa41-26df-4dba-b2bc-3fa3aa84b777",
+	   	"5bcaefae-2236-4082-9a44-716b0598d6ed",
+	   	"20ad299d-ca52-48ef-ac29-c5ec5479e070",
+	 	"430b36ae-94f3-4289-91ac-25475ad3bf74"
+	};
 
     [QModPrePatch]
     public static void PreLoad()
@@ -66,6 +74,21 @@ namespace ReikaKalseki.Reefbalance
 			FileLog.Log(ex.StackTrace);
 			FileLog.Log(ex.ToString());
         }
+        
+        DIHooks.onSkyApplierSpawnEvent += (sk) => {
+        	PrefabIdentifier pi = sk.gameObject.GetComponentInParent<PrefabIdentifier>();
+	    	if (pi && containmentDragonRepellents.Contains(pi.ClassId)) {
+	    		sk.gameObject.EnsureComponent<ContainmentFacilityDragonRepellent>();
+	    		return;
+	    	}
+        	SubRoot sr = sk.gameObject.GetComponentInParent<SubRoot>();
+        	if (sr && sr.isCyclops) {
+        		foreach (CyclopsLocker cl in sk.GetComponentsInChildren<CyclopsLocker>()) {
+	        		StorageContainer sc = cl.GetComponent<StorageContainer>();
+	        		sc.Resize(6, 8);
+        		}
+        	}
+        };
         
         if (config.getBoolean(RBConfig.ConfigEntries.REINF_GLASS)) {
         	BasicCraftingItem baseGlass = new BasicCraftingItem("BaseGlass", "Reinforced Glass", "Laminated glass with titanium reinforcement, suitable for underwater pressure vessels.", "WorldEntities/Natural/Glass");
@@ -244,6 +267,26 @@ namespace ReikaKalseki.Reefbalance
   		float sp = (float)(5*MathUtil.linterpolate(capacity, 400, 2000, 1, 3, true));
   		//SNUtil.writeToChat(charge+"/"+capacity+" ("+f+") > "+sp);
   		return sp;
+	}
+	
+	class ContainmentFacilityDragonRepellent : MonoBehaviour {
+		
+		void Update() {
+			float r = 80;
+			if (Player.main.transform.position.y <= 1350 && Vector3.Distance(transform.position, Player.main.transform.position) <= 100) {
+				RaycastHit[] hit = Physics.SphereCastAll(gameObject.transform.position, r, new Vector3(1, 1, 1), r);
+				foreach (RaycastHit rh in hit) {
+					if (rh.transform != null && rh.transform.gameObject) {
+						SeaDragon c = rh.transform.gameObject.GetComponent<SeaDragon>();
+						if (c) {
+							Vector3 vec = transform.position+((c.transform.position-transform.position).normalized*120);
+							c.GetComponent<SwimBehaviour>().SwimTo(vec, 20);
+						}
+					}
+				}
+			}
+		}
+		
 	}
   }
 }
