@@ -81,12 +81,14 @@ namespace ReikaKalseki.Reefbalance
 	    		sk.gameObject.EnsureComponent<ContainmentFacilityDragonRepellent>();
 	    		return;
 	    	}
-        	SubRoot sr = sk.gameObject.GetComponentInParent<SubRoot>();
-        	if (sr && sr.isCyclops) {
-        		foreach (CyclopsLocker cl in sk.GetComponentsInChildren<CyclopsLocker>()) {
-	        		StorageContainer sc = cl.GetComponent<StorageContainer>();
-	        		sc.Resize(6, 8);
-        		}
+        	if (config.getBoolean(RBConfig.ConfigEntries.LARGE_CYCLOCKER)) {
+	        	SubRoot sr = sk.gameObject.GetComponentInParent<SubRoot>();
+	        	if (sr && sr.isCyclops) {
+	        		foreach (CyclopsLocker cl in sk.GetComponentsInChildren<CyclopsLocker>()) {
+		        		StorageContainer sc = cl.GetComponent<StorageContainer>();
+		        		sc.Resize(6, 8);
+	        		}
+	        	}
         	}
         };
         
