@@ -42,14 +42,6 @@ namespace ReikaKalseki.Reefbalance
     
     private static readonly HashSet<TechType> meatFoods = new HashSet<TechType>();
     private static readonly HashSet<TechType> vegFoods = new HashSet<TechType>();
-	    
-	private static readonly HashSet<string> containmentDragonRepellents = new HashSet<string>() {
-	   	"c5512e00-9959-4f57-98ae-9a9962976eaa",
-	   	"542aaa41-26df-4dba-b2bc-3fa3aa84b777",
-	   	"5bcaefae-2236-4082-9a44-716b0598d6ed",
-	   	"20ad299d-ca52-48ef-ac29-c5ec5479e070",
-	 	"430b36ae-94f3-4289-91ac-25475ad3bf74"
-	};
 
     [QModPrePatch]
     public static void PreLoad()
@@ -74,10 +66,15 @@ namespace ReikaKalseki.Reefbalance
 			FileLog.Log(ex.StackTrace);
 			FileLog.Log(ex.ToString());
         }
+	    	
+        DIHooks.onFruitPlantTickEvent += fpt => {
+        	FruitPlant fp = fpt.getPlant();
+        	if (CraftData.GetTechType(fp.gameObject) == TechType.HangingFruitTree)
+        		fp.fruitSpawnInterval = fpt.getBaseGrowthTime()/config.getFloat(RBConfig.ConfigEntries.LANTERN_SPEED);
+        };
         
         DIHooks.onSkyApplierSpawnEvent += (sk) => {
-        	PrefabIdentifier pi = sk.gameObject.GetComponentInParent<PrefabIdentifier>();
-	    	if (pi && containmentDragonRepellents.Contains(pi.ClassId)) {
+        	if (ObjectUtil.isDragonRepellent(sk.gameObject)) {
 	    		sk.gameObject.EnsureComponent<ContainmentFacilityDragonRepellent>();
 	    		return;
 	    	}
@@ -89,6 +86,12 @@ namespace ReikaKalseki.Reefbalance
 		        		sc.Resize(6, 8);
 	        		}
 	        	}
+        	}
+        };
+        
+        DIHooks.knifeHarvestEvent += h => {
+        	if (h.objectType == TechType.BigCoralTubes && h.drops.Count > 0 && config.getBoolean(RBConfig.ConfigEntries.DOUBLE_THERMAL_CORAL) && Inventory.main.GetHeld().GetTechType() == TechType.HeatBlade) {
+        		h.drops[h.defaultDrop] = h.drops[h.defaultDrop]*2;
         	}
         };
         

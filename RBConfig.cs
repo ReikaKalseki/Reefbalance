@@ -23,6 +23,8 @@ namespace ReikaKalseki.Reefbalance
 			[ConfigEntry("Replace glass in seabase parts with reinforced glass, which costs half as much quartz", true)]REINF_GLASS,
 			[ConfigEntry("Reduce cost of some seabase components", true)]CHEAP_SEABASE,
 			[ConfigEntry("Increase size of cyclops lockers", true)]LARGE_CYCLOCKER,
+			[ConfigEntry("Thermoblade gives doubled coral tube yield", true)]DOUBLE_THERMAL_CORAL,
+			[ConfigEntry("Lantern Tree Growth Rate Multiplier", typeof(float), 1F, 0.1F, 10F, 1)]LANTERN_SPEED,
 		}
 	}
 }
