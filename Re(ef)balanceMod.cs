@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Linq;   //More advanced manipulation of lists/collections
 using HarmonyLib;
 using QModManager.API.ModLoading;
+using SMLHelper.V2.Handlers;
 using SMLHelper.V2.Crafting;
 using ReikaKalseki.DIAlterra;
 
@@ -42,6 +43,7 @@ namespace ReikaKalseki.Reefbalance
     
     private static readonly HashSet<TechType> meatFoods = new HashSet<TechType>();
     private static readonly HashSet<TechType> vegFoods = new HashSet<TechType>();
+    public static readonly Dictionary<TechType, int> scanCountOverrides = new Dictionary<TechType, int>();
 
     [QModPrePatch]
     public static void PreLoad()
@@ -94,6 +96,9 @@ namespace ReikaKalseki.Reefbalance
         		h.drops[h.defaultDrop] = h.drops[h.defaultDrop]*2;
         	}
         };
+        
+        foreach (KeyValuePair<TechType, int> kvp in scanCountOverrides)
+        	PDAHandler.EditFragmentsToScan(kvp.Key, kvp.Value);
         
         if (config.getBoolean(RBConfig.ConfigEntries.REINF_GLASS)) {
         	BasicCraftingItem baseGlass = new BasicCraftingItem("BaseGlass", "Reinforced Glass", "Laminated glass with titanium reinforcement, suitable for underwater pressure vessels.", "WorldEntities/Natural/Glass");
