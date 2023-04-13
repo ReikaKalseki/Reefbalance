@@ -92,8 +92,11 @@ namespace ReikaKalseki.Reefbalance
         };
         
         DIHooks.knifeHarvestEvent += h => {
-        	if (h.objectType == TechType.BigCoralTubes && h.drops.Count > 0 && config.getBoolean(RBConfig.ConfigEntries.DOUBLE_THERMAL_CORAL) && Inventory.main.GetHeld().GetTechType() == TechType.HeatBlade) {
-        		h.drops[h.defaultDrop] = h.drops[h.defaultDrop]*2;
+        	if (h.drops.Count > 0 && config.getBoolean(RBConfig.ConfigEntries.DOUBLE_THERMAL_CORAL) && Inventory.main.GetHeld().GetTechType() == TechType.HeatBlade) {
+        		if (h.objectType == TechType.BigCoralTubes)
+        			h.drops[h.defaultDrop] = h.drops[h.defaultDrop]*2;
+        		else if (h.objectType == TechType.TreeMushroom)
+        			h.drops[h.defaultDrop] = h.drops[h.defaultDrop]*2;
         	}
         };
         

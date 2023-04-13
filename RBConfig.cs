@@ -24,6 +24,7 @@ namespace ReikaKalseki.Reefbalance
 			[ConfigEntry("Reduce cost of some seabase components", true)]CHEAP_SEABASE,
 			[ConfigEntry("Increase size of cyclops lockers", true)]LARGE_CYCLOCKER,
 			[ConfigEntry("Thermoblade gives doubled coral tube yield", true)]DOUBLE_THERMAL_CORAL,
+			[ConfigEntry("Thermoblade gives doubled mushroom disk yield", true)]DOUBLE_THERMAL_MUSHDISK,
 			[ConfigEntry("Lantern Tree Growth Rate Multiplier", typeof(float), 1F, 0.1F, 10F, 1)]LANTERN_SPEED,
 		}
 	}
