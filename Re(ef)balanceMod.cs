@@ -43,7 +43,9 @@ namespace ReikaKalseki.Reefbalance
     
     private static readonly HashSet<TechType> meatFoods = new HashSet<TechType>();
     private static readonly HashSet<TechType> vegFoods = new HashSet<TechType>();
-    public static readonly Dictionary<TechType, int> scanCountOverrides = new Dictionary<TechType, int>();
+    private static readonly Dictionary<TechType, int> scanCountOverrides = new Dictionary<TechType, int>();
+    
+    public static event Action<Dictionary<TechType, int>> scanCountOverridesCalculation;
 
     [QModPrePatch]
     public static void PreLoad()
@@ -68,6 +70,8 @@ namespace ReikaKalseki.Reefbalance
 			FileLog.Log(ex.StackTrace);
 			FileLog.Log(ex.ToString());
         }
+        
+        ModVersionCheck.getFromGitVsInstall("Re(ef)Balance", modDLL, "Reefbalance").register();
 	    	
         DIHooks.onFruitPlantTickEvent += fpt => {
         	FruitPlant fp = fpt.getPlant();
@@ -99,9 +103,6 @@ namespace ReikaKalseki.Reefbalance
         			h.drops[h.defaultDrop] = h.drops[h.defaultDrop]*2;
         	}
         };
-        
-        foreach (KeyValuePair<TechType, int> kvp in scanCountOverrides)
-        	PDAHandler.EditFragmentsToScan(kvp.Key, kvp.Value);
         
         if (config.getBoolean(RBConfig.ConfigEntries.REINF_GLASS)) {
         	BasicCraftingItem baseGlass = new BasicCraftingItem("BaseGlass", "Reinforced Glass", "Laminated glass with titanium reinforcement, suitable for underwater pressure vessels.", "WorldEntities/Natural/Glass");
@@ -152,6 +153,28 @@ namespace ReikaKalseki.Reefbalance
         cacheFoodTypes();
         
         RecipeUtil.getRecipe(TechType.LEDLight).craftAmount = 3;
+    }
+    
+    [QModPostPatch]
+    public static void PostLoad() {
+        foreach (string line in File.ReadAllLines(Path.Combine(Path.GetDirectoryName(modDLL.Location), "fragment_scan_requirements.txt"))) {
+        	string[] split = line.Split(new char[]{'='}, StringSplitOptions.RemoveEmptyEntries);
+        	if (split.Length == 2) {
+        		TechType find = TechType.None;
+        		int amt = -1;
+        		if (TechTypeHandler.TryGetModdedTechType(split[0], out find) && int.TryParse(split[1], out amt)) {
+        			scanCountOverrides[find] = amt;
+        		}
+        	}
+        }
+    	
+    	if (scanCountOverridesCalculation != null)
+    		scanCountOverridesCalculation.Invoke(scanCountOverrides);
+        
+    	foreach (KeyValuePair<TechType, int> kvp in scanCountOverrides) {
+        	PDAHandler.EditFragmentsToScan(kvp.Key, kvp.Value);
+        	SNUtil.log("Setting fragment scan requirement: "+kvp.Key+" = "+kvp.Value);
+    	}
     }
     
     private static void cacheFoodTypes() {
