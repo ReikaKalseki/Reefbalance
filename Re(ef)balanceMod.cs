@@ -19,7 +19,7 @@ namespace ReikaKalseki.Reefbalance
     
     public static readonly Assembly modDLL = Assembly.GetExecutingAssembly();
     
-    public static readonly Config<RBConfig.ConfigEntries> config = new Config<RBConfig.ConfigEntries>();
+    public static readonly Config<RBConfig.ConfigEntries> config = new Config<RBConfig.ConfigEntries>(modDLL);
     
     private static readonly TechType[] decoratives = new TechType[]{
     	TechType.ToyCar,
@@ -72,6 +72,7 @@ namespace ReikaKalseki.Reefbalance
         }
         
         ModVersionCheck.getFromGitVsInstall("Re(ef)Balance", modDLL, "Reefbalance").register();
+        SNUtil.checkModHash(modDLL);
 	    	
         DIHooks.onFruitPlantTickEvent += fpt => {
         	FruitPlant fp = fpt.getPlant();
