@@ -297,6 +297,8 @@ namespace ReikaKalseki.Reefbalance
   	}
   
 	public static float getDrillingSpeed(Drillable dr, Exosuit s) {
+    	if (!s)
+    		return 3;
   		float charge;
   		float capacity;
   		s.energyInterface.GetValues(out charge, out capacity);
