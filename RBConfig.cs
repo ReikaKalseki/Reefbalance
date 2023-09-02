@@ -26,6 +26,7 @@ namespace ReikaKalseki.Reefbalance
 			[ConfigEntry("Thermoblade gives doubled coral tube yield", true)]DOUBLE_THERMAL_CORAL,
 			[ConfigEntry("Thermoblade gives doubled mushroom disk yield", true)]DOUBLE_THERMAL_MUSHDISK,
 			[ConfigEntry("Lantern Tree Growth Rate Multiplier", typeof(float), 1F, 0.1F, 10F, 1)]LANTERN_SPEED,
+			[ConfigEntry("Prevent Builder from destroying colliding objects", false)]NO_BUILDER_CLEAR,
 		}
 	}
 }

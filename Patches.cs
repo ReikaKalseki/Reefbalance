@@ -154,4 +154,26 @@ namespace ReikaKalseki.Reefbalance {
 		}
 	}
 	
+	[HarmonyPatch(typeof(ConstructableBase))]
+	[HarmonyPatch("SetState")]
+	public static class BuildingDestroyCollidingCheck {
+		
+		static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+			List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
+			try {
+				int idx = InstructionHandlers.getInstruction(codes, 0, 0, OpCodes.Call, "Builder", "CanDestroyObject", false, new Type[]{typeof(GameObject)});
+				codes[idx] = InstructionHandlers.createMethodCall("ReikaKalseki.Reefbalance.ReefbalanceMod", "canBuildingDestroyObject", false, typeof(GameObject));
+				FileLog.Log("Done patch "+MethodBase.GetCurrentMethod().DeclaringType);
+				//FileLog.Log("Codes are "+InstructionHandlers.toString(codes));
+			}
+			catch (Exception e) {
+				FileLog.Log("Caught exception when running patch "+MethodBase.GetCurrentMethod().DeclaringType+"!");
+				FileLog.Log(e.Message);
+				FileLog.Log(e.StackTrace);
+				FileLog.Log(e.ToString());
+			}
+			return codes.AsEnumerable();
+		}
+	}
+	
 }

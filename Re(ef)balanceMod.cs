@@ -307,6 +307,10 @@ namespace ReikaKalseki.Reefbalance
   		//SNUtil.writeToChat(charge+"/"+capacity+" ("+f+") > "+sp);
   		return sp;
 	}
+    
+    public static bool canBuildingDestroyObject(GameObject go) {
+    	return !config.getBoolean(RBConfig.ConfigEntries.NO_BUILDER_CLEAR) && Builder.CanDestroyObject(go);
+    }
 	
 	class ContainmentFacilityDragonRepellent : MonoBehaviour {
 		
