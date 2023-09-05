@@ -161,9 +161,9 @@ namespace ReikaKalseki.Reefbalance
         foreach (string line in File.ReadAllLines(Path.Combine(Path.GetDirectoryName(modDLL.Location), "fragment_scan_requirements.txt"))) {
         	string[] split = line.Split(new char[]{'='}, StringSplitOptions.RemoveEmptyEntries);
         	if (split.Length == 2) {
-        		TechType find = TechType.None;
+        		TechType find = SNUtil.getTechType(split[0]);
         		int amt = -1;
-        		if (TechTypeHandler.TryGetModdedTechType(split[0], out find) && int.TryParse(split[1], out amt)) {
+        		if (find != TechType.None && int.TryParse(split[1], out amt)) {
         			scanCountOverrides[find] = amt;
         		}
         	}
