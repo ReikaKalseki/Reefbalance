@@ -158,16 +158,7 @@ namespace ReikaKalseki.Reefbalance
     
     [QModPostPatch]
     public static void PostLoad() {
-        foreach (string line in File.ReadAllLines(Path.Combine(Path.GetDirectoryName(modDLL.Location), "fragment_scan_requirements.txt"))) {
-        	string[] split = line.Split(new char[]{'='}, StringSplitOptions.RemoveEmptyEntries);
-        	if (split.Length == 2) {
-        		TechType find = SNUtil.getTechType(split[0]);
-        		int amt = -1;
-        		if (find != TechType.None && int.TryParse(split[1], out amt)) {
-        			scanCountOverrides[find] = amt;
-        		}
-        	}
-        }
+    	TechTypeMappingConfig<int>.loadInline("fragment_scan_requirements", TechTypeMappingConfig<int>.IntParser.instance, TechTypeMappingConfig<int>.dictionaryAssign(scanCountOverrides));
     	
     	if (scanCountOverridesCalculation != null)
     		scanCountOverridesCalculation.Invoke(scanCountOverrides);
