@@ -176,4 +176,26 @@ namespace ReikaKalseki.Reefbalance {
 		}
 	}
 	
+	[HarmonyPatch(typeof(DataboxSpawner))]
+	[HarmonyPatch("Start")]
+	public static class DataboxDuplicateRemovalHook {
+		
+		static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+			List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
+			try {
+				int idx = InstructionHandlers.getInstruction(codes, 0, 0, OpCodes.Call, "KnownTech", "Contains", false, new Type[]{typeof(TechType)});
+				codes[idx] = InstructionHandlers.createMethodCall("ReikaKalseki.Reefbalance.ReefbalanceMod", "deleteDuplicateDatabox", false, typeof(TechType));
+				FileLog.Log("Done patch "+MethodBase.GetCurrentMethod().DeclaringType);
+				//FileLog.Log("Codes are "+InstructionHandlers.toString(codes));
+			}
+			catch (Exception e) {
+				FileLog.Log("Caught exception when running patch "+MethodBase.GetCurrentMethod().DeclaringType+"!");
+				FileLog.Log(e.Message);
+				FileLog.Log(e.StackTrace);
+				FileLog.Log(e.ToString());
+			}
+			return codes.AsEnumerable();
+		}
+	}
+	
 }

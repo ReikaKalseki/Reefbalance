@@ -302,6 +302,10 @@ namespace ReikaKalseki.Reefbalance
     public static bool canBuildingDestroyObject(GameObject go) {
     	return !config.getBoolean(RBConfig.ConfigEntries.NO_BUILDER_CLEAR) && Builder.CanDestroyObject(go);
     }
+    
+    public static bool deleteDuplicateDatabox(TechType tt) {
+    	return !config.getBoolean(RBConfig.ConfigEntries.ALWAYS_SPAWN_DB) && KnownTech.Contains(tt);
+    }
 	
 	class ContainmentFacilityDragonRepellent : MonoBehaviour {
 		
