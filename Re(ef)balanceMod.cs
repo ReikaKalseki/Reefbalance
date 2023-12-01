@@ -310,7 +310,7 @@ namespace ReikaKalseki.Reefbalance
 	class ContainmentFacilityDragonRepellent : MonoBehaviour {
 		
 		void Update() {
-			float r = 80;
+			float r = 120;
 			if (Player.main.transform.position.y <= 1350 && Vector3.Distance(transform.position, Player.main.transform.position) <= 100) {
 				RaycastHit[] hit = Physics.SphereCastAll(gameObject.transform.position, r, new Vector3(1, 1, 1), r);
 				foreach (RaycastHit rh in hit) {
