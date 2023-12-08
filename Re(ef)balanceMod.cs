@@ -21,7 +21,7 @@ namespace ReikaKalseki.Reefbalance
     
     public static readonly Config<RBConfig.ConfigEntries> config = new Config<RBConfig.ConfigEntries>(modDLL);
     
-    private static readonly TechType[] decoratives = new TechType[]{
+    private static readonly TechType[] decoratives = new TechType[]{ //does not include aurora as that has no techtype
     	TechType.ToyCar,
     	TechType.LabEquipment1,
     	TechType.LabEquipment2,
@@ -210,7 +210,7 @@ namespace ReikaKalseki.Reefbalance
 		meatFoods.Add(TechType.Hoverfish);
 		meatFoods.Add(TechType.Reginald);
 		meatFoods.Add(TechType.Spadefish);
-		meatFoods.Add(TechType.Floater);
+		//meatFoods.Add(TechType.Floater);
     	
     	vegFoods.Add(TechType.CreepvinePiece);
     	vegFoods.Add(TechType.Melon);
