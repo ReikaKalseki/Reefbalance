@@ -28,6 +28,7 @@ namespace ReikaKalseki.Reefbalance
 			[ConfigEntry("Lantern Tree Growth Rate Multiplier", typeof(float), 1F, 0.1F, 10F, 1)]LANTERN_SPEED,
 			[ConfigEntry("Prevent Builder from destroying colliding objects", false)]NO_BUILDER_CLEAR,
 			[ConfigEntry("Prevent deletion of duplicate databoxes", true)]ALWAYS_SPAWN_DB,
+			[ConfigEntry("Make large kyanite drop rates similar to other resources", true)]LARGE_KYANITE_DROPS,
 		}
 	}
 }

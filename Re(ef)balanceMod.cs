@@ -86,12 +86,22 @@ namespace ReikaKalseki.Reefbalance
 	    		return;
 	    	}
         	if (config.getBoolean(RBConfig.ConfigEntries.LARGE_CYCLOCKER)) {
-	        	SubRoot sr = sk.gameObject.GetComponentInParent<SubRoot>();
+	        	SubRoot sr = sk.gameObject.FindAncestor<SubRoot>();
 	        	if (sr && sr.isCyclops) {
 	        		foreach (CyclopsLocker cl in sk.GetComponentsInChildren<CyclopsLocker>()) {
 		        		StorageContainer sc = cl.GetComponent<StorageContainer>();
 		        		sc.Resize(6, 8);
 	        		}
+	        	}
+        	}
+        	if (config.getBoolean(RBConfig.ConfigEntries.LARGE_KYANITE_DROPS)) {
+	        	Drillable d = sk.gameObject.FindAncestor<Drillable>();
+	        	if (d && d.resources.Length == 1 && d.resources[0].techType == TechType.Kyanite) {
+	        		Drillable drs = ObjectUtil.lookupPrefab(VanillaResources.LARGE_DIAMOND.prefab).GetComponent<Drillable>();
+	        		d.resources[0].chance = drs.resources[0].chance;
+	        		d.kChanceToSpawnResources = drs.kChanceToSpawnResources;
+	        		d.minResourcesToSpawn = drs.minResourcesToSpawn;
+	        		d.maxResourcesToSpawn = drs.maxResourcesToSpawn;
 	        	}
         	}
         };
@@ -102,6 +112,8 @@ namespace ReikaKalseki.Reefbalance
         			h.drops[h.defaultDrop] = h.drops[h.defaultDrop]*2;
         		else if (h.objectType == TechType.TreeMushroom)
         			h.drops[h.defaultDrop] = h.drops[h.defaultDrop]*2;
+        		else if (h.objectType == TechType.RedTipRockThings)
+        			h.drops[TechType.CoralChunk] *= 2; //Ecocean
         	}
         };
         
