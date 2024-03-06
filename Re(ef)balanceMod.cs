@@ -81,6 +81,8 @@ namespace ReikaKalseki.Reefbalance
         };
         
         DIHooks.onSkyApplierSpawnEvent += (sk) => {
+	    	if (sk.name.StartsWith("Seamoth", StringComparison.InvariantCultureIgnoreCase) && sk.name.EndsWith("Arm(Clone)", StringComparison.InvariantCultureIgnoreCase))
+	    		return;
         	if (ObjectUtil.isDragonRepellent(sk.gameObject)) {
 	    		sk.gameObject.EnsureComponent<ContainmentFacilityDragonRepellent>();
 	    		return;
@@ -300,8 +302,8 @@ namespace ReikaKalseki.Reefbalance
   	}
   
 	public static float getDrillingSpeed(Drillable dr, Exosuit s) {
-    	if (!s)
-    		return 3;
+    	if (!s) //eg seamoth arm
+    		return 1;
   		float charge;
   		float capacity;
   		s.energyInterface.GetValues(out charge, out capacity);
