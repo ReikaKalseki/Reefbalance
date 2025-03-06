@@ -45,6 +45,8 @@ namespace ReikaKalseki.Reefbalance
     private static readonly HashSet<TechType> vegFoods = new HashSet<TechType>();
     private static readonly Dictionary<TechType, int> scanCountOverrides = new Dictionary<TechType, int>();
     
+    public static BasicCraftingItem baseGlass;
+    
     public static event Action<Dictionary<TechType, int>> scanCountOverridesCalculation;
 
     [QModPrePatch]
@@ -96,9 +98,9 @@ namespace ReikaKalseki.Reefbalance
 	        		}
 	        	}
         	}
-        	if (config.getBoolean(RBConfig.ConfigEntries.LARGE_KYANITE_DROPS)) {
+        	if (config.getBoolean(RBConfig.ConfigEntries.LARGE_KYANITE_DROPS) && sk.gameObject) {
 	        	Drillable d = sk.gameObject.FindAncestor<Drillable>();
-	        	if (d && d.resources.Length == 1 && d.resources[0].techType == TechType.Kyanite) {
+	        	if (d && d.resources != null && d.resources.Length == 1 && d.resources[0].techType == TechType.Kyanite) {
 	        		Drillable drs = ObjectUtil.lookupPrefab(VanillaResources.LARGE_DIAMOND.prefab).GetComponent<Drillable>();
 	        		d.resources[0].chance = drs.resources[0].chance;
 	        		d.kChanceToSpawnResources = drs.kChanceToSpawnResources;
@@ -120,7 +122,7 @@ namespace ReikaKalseki.Reefbalance
         };
         
         if (config.getBoolean(RBConfig.ConfigEntries.REINF_GLASS)) {
-        	BasicCraftingItem baseGlass = new BasicCraftingItem("BaseGlass", "Reinforced Glass", "Laminated glass with titanium reinforcement, suitable for underwater pressure vessels.", "WorldEntities/Natural/Glass");
+        	baseGlass = new BasicCraftingItem("BaseGlass", "Reinforced Glass", "Laminated glass with titanium reinforcement, suitable for underwater pressure vessels.", "WorldEntities/Natural/Glass");
 	        baseGlass.craftingSubCategory = ""+TechCategory.BasicMaterials;
 	        baseGlass.craftingTime = 1.5F;
 	        baseGlass.numberCrafted = 2;
@@ -129,7 +131,7 @@ namespace ReikaKalseki.Reefbalance
 			baseGlass.sprite = TextureManager.getSprite(modDLL, "Textures/Items/baseglass");
 	        baseGlass.Patch();
         
-	        HashSet<TechType> set = new HashSet<TechType>{TechType.Spotlight, TechType.Techlight, TechType.Aquarium};
+	        HashSet<TechType> set = new HashSet<TechType>{TechType.Spotlight, TechType.Techlight/*, TechType.Aquarium*/};
 	        for (TechType tt = TechType.BaseRoom; tt <= TechType.BaseNuclearReactor; tt++) {
 	        	set.Add(tt);
 	        }
@@ -181,6 +183,10 @@ namespace ReikaKalseki.Reefbalance
         	PDAHandler.EditFragmentsToScan(kvp.Key, kvp.Value);
         	SNUtil.log("Setting fragment scan requirement: "+kvp.Key+" = "+kvp.Value);
     	}
+    }
+    
+    public static int getScanCountOverride(TechType tt) {
+    	return scanCountOverrides.ContainsKey(tt) ? scanCountOverrides[tt] : -1;
     }
     
     private static void cacheFoodTypes() {
