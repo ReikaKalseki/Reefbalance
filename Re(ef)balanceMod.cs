@@ -89,15 +89,6 @@ namespace ReikaKalseki.Reefbalance
 	    		sk.gameObject.EnsureComponent<ContainmentFacilityDragonRepellent>();
 	    		return;
 	    	}
-        	if (config.getBoolean(RBConfig.ConfigEntries.LARGE_CYCLOCKER)) {
-	        	SubRoot sr = sk.gameObject.FindAncestor<SubRoot>();
-	        	if (sr && sr.isCyclops) {
-	        		foreach (CyclopsLocker cl in sk.GetComponentsInChildren<CyclopsLocker>()) {
-		        		StorageContainer sc = cl.GetComponent<StorageContainer>();
-		        		sc.Resize(6, 8);
-	        		}
-	        	}
-        	}
         	if (config.getBoolean(RBConfig.ConfigEntries.LARGE_KYANITE_DROPS) && sk.gameObject) {
 	        	Drillable d = sk.gameObject.FindAncestor<Drillable>();
 	        	if (d && d.resources != null && d.resources.Length == 1 && d.resources[0].techType == TechType.Kyanite) {
