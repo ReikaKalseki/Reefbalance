@@ -174,6 +174,16 @@ namespace ReikaKalseki.Reefbalance
         	PDAHandler.EditFragmentsToScan(kvp.Key, kvp.Value);
         	SNUtil.log("Setting fragment scan requirement: "+kvp.Key+" = "+kvp.Value);
     	}
+        
+        int uran = config.getInt(RBConfig.ConfigEntries.URANPERROD);
+        if (uran != (int)config.getEntry(RBConfig.ConfigEntries.URANPERROD).vanillaValue) {
+        	RecipeUtil.modifyIngredients(TechType.ReactorRod, i => {if (i.techType == TechType.UraniniteCrystal) i.amount = uran; return false;});
+    	
+	    	TechType refuel = SNUtil.getTechType("ReplenishReactorRod");
+	    	if (refuel != TechType.None) {
+	    		RecipeUtil.modifyIngredients(refuel, i => {if (i.techType == TechType.UraniniteCrystal) i.amount = uran; return false;});
+	    	}
+        }
     }
     
     public static int getScanCountOverride(TechType tt) {

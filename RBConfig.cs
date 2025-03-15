@@ -29,6 +29,7 @@ namespace ReikaKalseki.Reefbalance
 			[ConfigEntry("Prevent Builder from destroying colliding objects", false)]NO_BUILDER_CLEAR,
 			[ConfigEntry("Prevent deletion of duplicate databoxes", true)]ALWAYS_SPAWN_DB,
 			[ConfigEntry("Make large kyanite drop rates similar to other resources", true)]LARGE_KYANITE_DROPS,
+			[ConfigEntry("Nuclear fuel rod uranium cost", typeof(int), 3, 1, 12, 3)]URANPERROD,
 		}
 	}
 }
