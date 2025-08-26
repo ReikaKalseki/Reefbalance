@@ -1,15 +1,13 @@
 ﻿using System;
-
 using System.Collections.Generic;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
+
 using ReikaKalseki.DIAlterra;
 
-namespace ReikaKalseki.Reefbalance
-{
-	public class RBConfig
-	{		
+namespace ReikaKalseki.Reefbalance {
+	public class RBConfig {
 		public enum ConfigEntries {
 			[ConfigEntry("Reduce creepvine sample size to 1x2", true)]COMPACT_KELP, //Inventory size of creepvine samples
 			[ConfigEntry("Make nonfunctional decorative blocks 1x1", true)]COMPACT_DECO, //Inventory size of things like nonfunctional sample containers and lab equipment
@@ -23,8 +21,8 @@ namespace ReikaKalseki.Reefbalance
 			[ConfigEntry("Replace glass in seabase parts with reinforced glass which costs half as much quartz", true)]REINF_GLASS,
 			[ConfigEntry("Reduce cost of some seabase components", true)]CHEAP_SEABASE,
 			//[ConfigEntry("Increase size of cyclops lockers", true)]LARGE_CYCLOCKER,
-			[ConfigEntry("Thermoblade gives doubled coral tube yield", true)]DOUBLE_THERMAL_CORAL,
-			[ConfigEntry("Thermoblade gives doubled mushroom disk yield", true)]DOUBLE_THERMAL_MUSHDISK,
+			[ConfigEntry("Thermoblade gives doubled coral tube yield", true, true)]DOUBLE_THERMAL_CORAL,
+			[ConfigEntry("Thermoblade gives doubled mushroom disk yield", true, true)]DOUBLE_THERMAL_MUSHDISK,
 			[ConfigEntry("Lantern Tree Growth Rate Multiplier", typeof(float), 1F, 0.1F, 10F, 1)]LANTERN_SPEED,
 			[ConfigEntry("Prevent Builder from destroying colliding objects", false)]NO_BUILDER_CLEAR,
 			[ConfigEntry("Prevent deletion of duplicate databoxes", true)]ALWAYS_SPAWN_DB,
