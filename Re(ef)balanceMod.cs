@@ -44,8 +44,8 @@ namespace ReikaKalseki.Reefbalance {
 		TechType.RedConePlantSeed,
 	};
 
-		private static readonly HashSet<TechType> meatFoods = new HashSet<TechType>();
-		private static readonly HashSet<TechType> vegFoods = new HashSet<TechType>();
+		//private static readonly HashSet<TechType> meatFoods = new HashSet<TechType>();
+		//private static readonly HashSet<TechType> vegFoods = new HashSet<TechType>();
 		private static readonly Dictionary<TechType, int> scanCountOverrides = new Dictionary<TechType, int>();
 
 		public static BasicCraftingItem baseGlass;
@@ -147,7 +147,7 @@ namespace ReikaKalseki.Reefbalance {
 				RecipeUtil.modifyIngredients(TechType.MapRoomHUDChip, i => i.techType == TechType.Magnetite);
 				RecipeUtil.addIngredient(TechType.MapRoomHUDChip, TechType.Diamond, 1);
 			}
-			cacheFoodTypes();
+			//cacheFoodTypes();
 
 			RecipeUtil.getRecipe(TechType.LEDLight).craftAmount = 3;
 		}
@@ -178,7 +178,7 @@ namespace ReikaKalseki.Reefbalance {
 		public static int getScanCountOverride(TechType tt) {
 			return scanCountOverrides.ContainsKey(tt) ? scanCountOverrides[tt] : -1;
 		}
-
+		/*
 		private static void cacheFoodTypes() {
 			meatFoods.Add(TechType.CookedReginald);
 			meatFoods.Add(TechType.CookedBladderfish);
@@ -230,7 +230,7 @@ namespace ReikaKalseki.Reefbalance {
 			vegFoods.Add(TechType.HangingFruit);
 			vegFoods.Add(TechType.PurpleVegetable);
 			vegFoods.Add(TechType.KooshChunk);
-		}
+		}*/
 
 		private static void adjustItemSizes() {
 			if (config.getBoolean(RBConfig.ConfigEntries.COMPACT_KELP))
@@ -280,9 +280,16 @@ namespace ReikaKalseki.Reefbalance {
 
 		private static RBConfig.ConfigEntries getFoodType(Eatable e) {
 			TechType id = CraftData.GetTechType(e.gameObject);
-			return meatFoods.Contains(id)
-				? RBConfig.ConfigEntries.FOOD_DELAY_MEAT
-				: vegFoods.Contains(id) ? RBConfig.ConfigEntries.FOOD_DELAY_VEG : RBConfig.ConfigEntries.FOOD_DELAY;
+			FoodCategory cat = id.getFoodCategory();
+			switch (cat) {
+				case FoodCategory.PLANT:
+					return RBConfig.ConfigEntries.FOOD_DELAY_VEG;
+				case FoodCategory.RAWMEAT:
+				case FoodCategory.EDIBLEMEAT:
+					return RBConfig.ConfigEntries.FOOD_DELAY_MEAT;
+				default:
+					return RBConfig.ConfigEntries.FOOD_DELAY;
+			}
 		}
 
 		public static void initializeSeamothStorage(SeamothStorageContainer sc) {
