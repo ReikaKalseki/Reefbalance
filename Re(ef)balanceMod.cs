@@ -16,6 +16,7 @@ using SMLHelper.V2.Handlers;
 using UnityEngine;  //Needed for most Unity Enginer manipulations: Vectors, GameObjects, Audio, etc.
 
 namespace ReikaKalseki.Reefbalance {
+
 	[QModCore]
 	public class ReefbalanceMod {
 		public const string MOD_KEY = "ReikaKalseki.Reefbalance";
